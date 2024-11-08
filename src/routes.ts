@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { ClienteController } from "./controllers/usuarios.controller";
 import { verificarToken } from "./middlewares/auth.middleware";
+import { AdminController } from "./controllers/administrador.controller";
+import { verificarTokenAdmin } from "./middlewares/auth.middleware.admin";
 
 //aca van las rutas
 export class AppRoutes {
@@ -14,7 +16,7 @@ export class AppRoutes {
       controller.register(request, response)
     );
 
-    // Nuevas rutas
+    // rutas usuarios
     router.post("/login", (request, response) =>
       controller.login(request, response)
     );
@@ -25,9 +27,18 @@ export class AppRoutes {
       controller.register(request, response)
     );
 
-    // Rutas del cliente
+    // Rutas Actividades del cliente
     router.get("/activities", (request, response) =>
       controller.getActivities(request, response)
+    );
+
+    //rutas admin
+    const controller2 = new AdminController();
+    router.post("/loginAdmin", (request, response) =>
+      controller2.login(request, response)
+    );
+    router.get("/authAdmin", verificarTokenAdmin, (request, response) =>
+      controller2.checkAuthStatus(request, response)
     );
 
     return router;
