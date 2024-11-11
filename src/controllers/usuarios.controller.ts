@@ -8,12 +8,6 @@ export class ClienteController {
     response.json(activities);
   }
 
-  //metodo ver usuarios
-  async get_usuarios(response: Response) {
-    const clientes = await Cliente.find();
-    response.json(clientes);
-  }
-
   //metodo agregar usuarios
   async register(request: Request, response: Response) {
     const { ci, nombre, apellido, password } = request.body;
