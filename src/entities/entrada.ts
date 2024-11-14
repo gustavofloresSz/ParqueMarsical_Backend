@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, OneToMany } from "typeorm";
 import { Compra } from "./compra";
 
 @Entity()
@@ -9,9 +9,9 @@ export class Entrada extends BaseEntity {
     @Column("float")
     precio: number;
 
-    @Column("date")
-    fecha: Date;
+    @Column({ length: 20 })
+    descripcion: string;
 
-    @ManyToOne(() => Compra, (compra) => compra.entradas)
+    @OneToMany(() => Compra, (compra) => compra.entrada)
     compra: Compra;
 }

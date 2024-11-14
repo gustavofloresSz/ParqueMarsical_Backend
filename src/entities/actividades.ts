@@ -26,12 +26,6 @@ export class Actividades extends BaseEntity {
   @Column("float")
   precio: number;
 
-  @ManyToOne(() => Administrador, (administrador) => administrador.actividades)
-  administrador: Administrador;
-
-  @ManyToOne(
-    () => Compra_Actividad,
-    (compraActividad) => compraActividad.actividad
-  )
+  @OneToMany(() => Compra_Actividad, (compraActividad) => compraActividad.actividad)
   compraActividades: Compra_Actividad[];
 }

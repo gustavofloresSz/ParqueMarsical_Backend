@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, CreateDateColumn } from "typeorm";
 import { Compra } from "./compra";
 import { Compra_Actividad } from "./compra_activididad";
 
@@ -18,6 +18,9 @@ export class Cliente extends BaseEntity {
 
     @Column({ length: 20 })
     password: string;
+
+    @CreateDateColumn()
+    fecha_creacion: Date;
 
     @OneToMany(() => Compra, (compra) => compra.cliente)
     compras: Compra[];

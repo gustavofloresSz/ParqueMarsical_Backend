@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, OneToMany, CreateDateColumn } from "typeorm";
 import { Cliente } from "./cliente";
 import { Administrador } from "./administrador";
 import { Entrada } from "./entrada";
@@ -15,9 +15,12 @@ export class Compra extends BaseEntity {
     @Column("int")
     cantidad: number;
 
+    @CreateDateColumn()
+    fecha: Date;
+
     @ManyToOne(() => Cliente, (cliente) => cliente.compras)
     cliente: Cliente;
 
-    @OneToMany(() => Entrada, (entrada) => entrada.compra)
-    entradas: Entrada[];
+    @ManyToOne(() => Entrada, (entrada) => entrada.compra)
+    entrada: Entrada[];
 }

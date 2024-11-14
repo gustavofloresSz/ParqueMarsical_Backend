@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { Cliente, Actividades } from "../entities";
+import { Between, Raw } from "typeorm";
 
 export class ClienteController {
   async getActivities(request: Request, response: Response) {
@@ -51,5 +52,25 @@ export class ClienteController {
       expiresIn: "1h",
     });
     return token;
+  }
+
+  //Metodos para el resporte
+  async getClientesByFecha(request: Request, response: Response) {
+    const { fecha } = request.query;
+    try {
+      const clientes = await Cliente.find({
+        where: {
+          fecha_creacion: Raw(
+            (alias) => `DATE(${alias}) = :fecha`,
+            { fecha }
+          ),
+        },
+      });
+      console.log(clientes);
+      response.json(clientes);
+    } catch (error) {
+      console.error("Error al obtener clientes por fecha:", error);
+      response.status(500).json({ message: "Error al obtener clientes" });
+    }
   }
 }

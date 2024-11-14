@@ -18,7 +18,4 @@ export class Administrador extends BaseEntity {
 
     @Column({ length: 20 })
     password: string;
-
-    @OneToMany(() => Actividades, (actividades) => actividades.administrador)
-    actividades: Actividades[];
 }

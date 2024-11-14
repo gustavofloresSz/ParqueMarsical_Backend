@@ -4,6 +4,7 @@ import { verificarToken } from "./middlewares/auth.middleware";
 import { AdminController } from "./controllers/administrador.controller";
 import { verificarTokenAdmin } from "./middlewares/auth.middleware.admin";
 import { CompraEntradasController } from "./controllers/compra_entradas.controller";
+import { ActividadesController } from "./controllers/compra_actividades.controller";
 
 //aca van las rutas
 export class AppRoutes {
@@ -12,6 +13,11 @@ export class AppRoutes {
     const controller = new ClienteController();
     router.post("/clientes", (request, response) =>
       controller.register(request, response)
+    );
+
+    //para el reporte
+    router.get("/fecha_clientes", (request, response) =>
+      controller.getClientesByFecha(request, response)
     );
 
     // rutas usuarios
@@ -39,10 +45,13 @@ export class AppRoutes {
       controller2.checkAuthStatus(request, response)
     );
 
-    //agregar compra
+    //ruta compraEntrada
     const controller3 = new CompraEntradasController();
     router.post("/compra",(request,response) => controller3.add_compra(request,response))
 
+    //ruta compraActividad
+    const controller4 = new ActividadesController();
+    router.post("/compraActividad",(request,response)=>controller4.add_compra_actividad(request,response))
     return router;
   }
 }
