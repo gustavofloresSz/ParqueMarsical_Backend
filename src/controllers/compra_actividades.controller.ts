@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Actividades, Compra_Actividad } from "../entities";
+import { Raw } from "typeorm";
 
 export class ActividadesController {
   //metodo agregar actividades
@@ -39,6 +40,33 @@ export class ActividadesController {
     } catch (error) {
       console.error('Error al registrar actividades:', error);
       return response.status(500).json({ error: 'Error al registrar actividades' });
+    }
+  }
+
+  async getActividadesVendidasPorFecha(request: Request, response: Response) {
+    const { fechaInicio, fechaFin } = request.query;
+    try {
+        const actividadesVendidas = await Compra_Actividad.find({
+            where: {
+                fecha: Raw(
+                    (alias) => `DATE(${alias}) BETWEEN :fechaInicio AND :fechaFin`,
+                    { fechaInicio, fechaFin }
+                ),
+            },
+            relations: ['actividad', 'cliente'], //la relacion aca, es como un join
+        });
+
+        const resultados = actividadesVendidas.map(compra => ({
+            nombreActividad: compra.actividad.nombre,
+            nombreCliente: compra.cliente.nombre,
+            ciCliente: compra.cliente.ci,
+            cantidad: compra.cantidad,
+        }));
+
+        response.json(resultados);
+    } catch (error) {
+        console.error("Error al obtener el reporte de actividades:", error);
+        response.status(500).json({ message: "Error al obtener el reporte de actividades" });
     }
   }
 }

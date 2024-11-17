@@ -1,8 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, OneToMany, CreateDateColumn } from "typeorm";
 import { Cliente } from "./cliente";
-import { Administrador } from "./administrador";
 import { Entrada } from "./entrada";
-import { Actividades } from "./actividades";
 
 @Entity()
 export class Compra extends BaseEntity {
@@ -22,5 +20,5 @@ export class Compra extends BaseEntity {
     cliente: Cliente;
 
     @ManyToOne(() => Entrada, (entrada) => entrada.compra)
-    entrada: Entrada[];
+    entrada: Entrada;
 }

@@ -6,7 +6,6 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Administrador } from "./administrador";
 import { Compra_Actividad } from "./compra_activididad";
 
 @Entity()

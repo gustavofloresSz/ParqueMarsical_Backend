@@ -56,17 +56,17 @@ export class ClienteController {
 
   //Metodos para el resporte
   async getClientesByFecha(request: Request, response: Response) {
-    const { fecha } = request.query;
+    const { fechaInicio, fechaFin } = request.query;
     try {
       const clientes = await Cliente.find({
         where: {
           fecha_creacion: Raw(
-            (alias) => `DATE(${alias}) = :fecha`,
-            { fecha }
+            (alias) => `DATE(${alias}) BETWEEN :fechaInicio AND :fechaFin`,
+            { fechaInicio, fechaFin }
           ),
         },
       });
-      console.log(clientes);
+      console.log(clientes)
       response.json(clientes);
     } catch (error) {
       console.error("Error al obtener clientes por fecha:", error);

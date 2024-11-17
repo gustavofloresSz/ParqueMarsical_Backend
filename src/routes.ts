@@ -5,12 +5,18 @@ import { AdminController } from "./controllers/administrador.controller";
 import { verificarTokenAdmin } from "./middlewares/auth.middleware.admin";
 import { CompraEntradasController } from "./controllers/compra_entradas.controller";
 import { ActividadesController } from "./controllers/compra_actividades.controller";
+import { IngresosController } from "./controllers/ingresos.controller";
 
 //aca van las rutas
 export class AppRoutes {
   static get routes(): Router {
     const router = Router();
     const controller = new ClienteController();
+    const controller2 = new AdminController();
+    const controller3 = new CompraEntradasController();
+    const controller4 = new ActividadesController();
+    const controller5 = new IngresosController();
+
     router.post("/clientes", (request, response) =>
       controller.register(request, response)
     );
@@ -18,6 +24,21 @@ export class AppRoutes {
     //para el reporte
     router.get("/fecha_clientes", (request, response) =>
       controller.getClientesByFecha(request, response)
+    );
+    router.get("/compra_entradas", (request, response) =>
+      controller3.getEntradasVendidasPorFecha(request, response)
+    );
+    router.get("/compra_actividades", (request, response) =>
+      controller4.getActividadesVendidasPorFecha(request, response)
+    );
+    router.get("/income", (request, response) =>
+      controller5.getGananciasEntrada(request, response)
+    );
+    router.get("/incomeActivities", (request, response) =>
+      controller5.getGananciasActividades(request, response)
+    );
+    router.get("/bestActivity", (request, response) =>
+      controller5.getActividadMasVendida(request, response)
     );
 
     // rutas usuarios
@@ -37,7 +58,6 @@ export class AppRoutes {
     );
 
     //rutas admin
-    const controller2 = new AdminController();
     router.post("/loginAdmin", (request, response) =>
       controller2.login(request, response)
     );
@@ -46,12 +66,11 @@ export class AppRoutes {
     );
 
     //ruta compraEntrada
-    const controller3 = new CompraEntradasController();
     router.post("/compra",(request,response) => controller3.add_compra(request,response))
-
+    
     //ruta compraActividad
-    const controller4 = new ActividadesController();
     router.post("/compraActividad",(request,response)=>controller4.add_compra_actividad(request,response))
+    
     return router;
   }
 }
